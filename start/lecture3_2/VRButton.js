@@ -8,7 +8,7 @@ class VRButton{
 
 	constructor( renderer ) {
         this.renderer = renderer;
-       // check for xr component of the navigator object 
+       // check for xr component of the navigator
         if ( 'xr' in navigator ) {
            // how should the button appear?
             const button = document.createElement('button');
@@ -16,16 +16,18 @@ class VRButton{
             button.style.height = '40px';
             document.body.appendChild(button);
             // does button support an immersive vr session?
-            navigator.xr.isSessionSupported('immersive-vrx').then((supported) =>
+            navigator.xr.isSessionSupported('immersive-vr').then((supported) =>
             {
                 supported ? this.showEnterVR(button) : this.showWebXRNotFound(button);
             })
 		} else {
+            //check for secure browser
             const message = document.createElement('a');
             if(window.isSecureContext === false){
                 message.href = document.location.href.replace(/^http:/, 'https:');
                 message.innerHTML = 'WEBXR NEEDS HTTPS';
-            }else{
+            }else{ 
+                // display website to provide advice is xr is not supported
                 message.href = 'https://immersiveweb.dev';
                 message.innerHTML = 'WEBXR NOT AVAILABLE';
             }
@@ -42,7 +44,7 @@ class VRButton{
 		}
 
     }
-
+    // stylizing the button
 	showEnterVR( button ) { 
         let currentSession = null;
 
@@ -53,7 +55,7 @@ class VRButton{
         button.style.width = '80px';
         button.style.cursorr = 'pointer';
         button.innerHTML = '<i class="fas fa-vr-cardboard"></i>';
-
+        // mouse events to check the type of seesion required is supported
         button.onmouseenter = function(){
             button.style.fontSize = '12px';
             button.textContent = (currentSession===null) ? 'ENTER VR' : 'EXIT VR';
@@ -67,7 +69,7 @@ class VRButton{
         }
         
         const self = this;
-
+        //function onSessionStarted
         function onSessionStarted(session){
             session.addEventListener('end', onSessionEnded);
 
@@ -78,7 +80,7 @@ class VRButton{
 
             currentSession = session;
         }
-
+        // function onSessionEnded
         function onSessionEnded(){
             currentSession.removeEventListener('end', onSessionEnded);
 
@@ -87,7 +89,7 @@ class VRButton{
             
             currentSession = null;
         }
-
+        //set the click event to request xr session
         button.onclick = function(){
             if(currentSession == null){
                 const sessionInit = {optionalFeatures:['local-floor', 'bounded-floor']};
