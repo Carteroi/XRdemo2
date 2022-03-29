@@ -93,8 +93,8 @@ class App{
     buildControllers(){
         const controllerModelFactory = new XRControllerModelFactory();
 
-        const geometry = new THREE.BufferGeometry().setFromPoint([
-            new THREE.Vector3(0,0,1),
+        const geometry = new THREE.BufferGeometry().setFromPoints([
+            new THREE.Vector3(0,0,0),
             new THREE.Vector3(0,0,-1)
         ]);
         const line = new THREE.Line(geometry);
@@ -116,6 +116,7 @@ class App{
             grip.add(controllerModelFactory.createControllerModel(grip));
             this.scene.add(grip);
         }
+        return controllers;
     }
     
     handleController( controller ){
@@ -137,6 +138,7 @@ class App{
                 self.handleController( controller ) 
             });
         }
+
         
         this.renderer.render( this.scene, this.camera );
     }
