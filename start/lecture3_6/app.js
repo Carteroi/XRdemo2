@@ -87,32 +87,8 @@ class App {
 
 
     }   
-    resize(){
-        this.camera.aspect = window.innerWidth / window.innerHeight;
-        this.camera.updateProjectionMatrix();
-        this.renderer.setSize( window.innerWidth, window.innerHeight );  
-    }
-    
-    render(){
-        const dt = this.clock.getDelta();
-        if (this.renderer.xr.isPresenting){
-            const self = this;
-            if (this.controllers){
-                Object.values(this.controllers).forEach((value) => {
-                    self.handleController(value.controller);
-                });
-            }
-            if (this.elapsedTime===undefined) this.elapsedTime = 0;
-            this.elapsedTime += dt;
-            if (this.elapsedTime > 0.3){
-                this.updateGamepadState();
-                this.elapsedTime = 0;
-            } else{
-                this.stats.update();
-            }
-        }
-        this.renderer.render(this.scene, this.camera);
-    }
+  
+
 }
 
 export {App};
