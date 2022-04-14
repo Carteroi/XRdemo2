@@ -60,7 +60,7 @@ class App {
     }
 
     random(min,max){
-        returnMath.random()* (max-min) + min;
+        return Math.random() * (max-min) + min;
     }
 
     initScene(){
