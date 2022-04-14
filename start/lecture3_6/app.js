@@ -70,6 +70,8 @@ class App {
             new BoxLineGeometry(6,6,6,10,10,10),
             new THREE.LineBasicMaterial({color: 0x808080})
         );
+        this.room.geormetry.translate(0,3,0);
+        this.scene.add(this.room);
     }
 
 }
