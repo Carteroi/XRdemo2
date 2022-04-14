@@ -24,7 +24,7 @@ class App {
         this.camera.position.set(0, 1.6, 3);
 
         this.scene = new THREE.Scene();
-        this.scene.background = new THREE.Color(0x505050);
+        this.scene.background = new THREE.Color(0xffffff);
 
         this.scene.add(new THREE.HemisphereLight(0x606060, 0x404040));
 
@@ -60,7 +60,7 @@ class App {
     }
 
     random(min,max){
-        return Math.random() * (max-min) + min;
+        returnMath.random()* (max-min) + min;
     }
 
     initScene(){
@@ -72,8 +72,47 @@ class App {
         );
         this.room.geormetry.translate(0,3,0);
         this.scene.add(this.room);
-    }
 
+        const geometry = new THREE.IcosahedronBufferGeometry(this.radius, 2);
+
+        for (let i = 0; i < 50; i++) {
+            const object = new THREE.Mesh(geometry, new THREE.MeshLambertMaterial({color: Math.random() * 0xffffff}));
+            object.position.x = this.random(-2, 2);
+            object.position.y = (-2, 2);
+            object.position.z = (-1, 2);
+
+            this.room.add(object);
+        }
+
+
+
+    }   
+    resize(){
+        this.camera.aspect = window.innerWidth / window.innerHeight;
+        this.camera.updateProjectionMatrix();
+        this.renderer.setSize( window.innerWidth, window.innerHeight );  
+    }
+    
+    render(){
+        const dt = this.clock.getDelta();
+        if (this.renderer.xr.isPresenting){
+            const self = this;
+            if (this.controllers){
+                Object.values(this.controllers).forEach((value) => {
+                    self.handleController(value.controller);
+                });
+            }
+            if (this.elapsedTime===undefined) this.elapsedTime = 0;
+            this.elapsedTime += dt;
+            if (this.elapsedTime > 0.3){
+                this.updateGamepadState();
+                this.elapsedTime = 0;
+            } else{
+                this.stats.update();
+            }
+        }
+        this.renderer.render(this.scene, this.camera);
+    }
 }
 
 export {App};
